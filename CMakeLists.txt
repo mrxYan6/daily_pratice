@@ -3,4 +3,5 @@ project(daily)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(daily  CF773F.cpp)
+add_compile_definitions(LOCAL)
+add_executable(daily  123.cpp)
