@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/daily.dir/5657.cpp.o"
-  "CMakeFiles/daily.dir/5657.cpp.o.d"
+  "CMakeFiles/daily.dir/2015.cpp.o"
+  "CMakeFiles/daily.dir/2015.cpp.o.d"
   "daily"
   "daily.pdb"
 )
