@@ -4,4 +4,4 @@ project(daily)
 set(CMAKE_CXX_STANDARD 20)
 
 add_compile_definitions(LOCAL)
-add_executable(daily 2015.cpp)
+add_executable(daily 2014.cpp)
