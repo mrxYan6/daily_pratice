@@ -129,29 +129,29 @@ daily/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/build
 .PHONY : daily/fast
 
-5657.o: 5657.cpp.o
-.PHONY : 5657.o
+2015.o: 2015.cpp.o
+.PHONY : 2015.o
 
 # target to build an object file
-5657.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/5657.cpp.o
-.PHONY : 5657.cpp.o
+2015.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/2015.cpp.o
+.PHONY : 2015.cpp.o
 
-5657.i: 5657.cpp.i
-.PHONY : 5657.i
+2015.i: 2015.cpp.i
+.PHONY : 2015.i
 
 # target to preprocess a source file
-5657.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/5657.cpp.i
-.PHONY : 5657.cpp.i
+2015.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/2015.cpp.i
+.PHONY : 2015.cpp.i
 
-5657.s: 5657.cpp.s
-.PHONY : 5657.s
+2015.s: 2015.cpp.s
+.PHONY : 2015.s
 
 # target to generate assembly for a file
-5657.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/5657.cpp.s
-.PHONY : 5657.cpp.s
+2015.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/daily.dir/build.make CMakeFiles/daily.dir/2015.cpp.s
+.PHONY : 2015.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... daily"
-	@echo "... 5657.o"
-	@echo "... 5657.i"
-	@echo "... 5657.s"
+	@echo "... 2015.o"
+	@echo "... 2015.i"
+	@echo "... 2015.s"
 .PHONY : help
 
 

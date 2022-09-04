@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/5657.cpp" "CMakeFiles/daily.dir/5657.cpp.o" "gcc" "CMakeFiles/daily.dir/5657.cpp.o.d"
+  "/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp" "CMakeFiles/daily.dir/2015.cpp.o" "gcc" "CMakeFiles/daily.dir/2015.cpp.o.d"
   )
 
 # Targets to which this target links.

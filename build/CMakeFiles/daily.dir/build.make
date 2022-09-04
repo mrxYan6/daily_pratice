@@ -69,28 +69,28 @@ include CMakeFiles/daily.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/daily.dir/flags.make
 
-CMakeFiles/daily.dir/5657.cpp.o: CMakeFiles/daily.dir/flags.make
-CMakeFiles/daily.dir/5657.cpp.o: ../5657.cpp
-CMakeFiles/daily.dir/5657.cpp.o: CMakeFiles/daily.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/daily.dir/5657.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/daily.dir/5657.cpp.o -MF CMakeFiles/daily.dir/5657.cpp.o.d -o CMakeFiles/daily.dir/5657.cpp.o -c /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/5657.cpp
+CMakeFiles/daily.dir/2015.cpp.o: CMakeFiles/daily.dir/flags.make
+CMakeFiles/daily.dir/2015.cpp.o: ../2015.cpp
+CMakeFiles/daily.dir/2015.cpp.o: CMakeFiles/daily.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/daily.dir/2015.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/daily.dir/2015.cpp.o -MF CMakeFiles/daily.dir/2015.cpp.o.d -o CMakeFiles/daily.dir/2015.cpp.o -c /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp
 
-CMakeFiles/daily.dir/5657.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/daily.dir/5657.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/5657.cpp > CMakeFiles/daily.dir/5657.cpp.i
+CMakeFiles/daily.dir/2015.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/daily.dir/2015.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp > CMakeFiles/daily.dir/2015.cpp.i
 
-CMakeFiles/daily.dir/5657.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/daily.dir/5657.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/5657.cpp -o CMakeFiles/daily.dir/5657.cpp.s
+CMakeFiles/daily.dir/2015.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/daily.dir/2015.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp -o CMakeFiles/daily.dir/2015.cpp.s
 
 # Object files for target daily
 daily_OBJECTS = \
-"CMakeFiles/daily.dir/5657.cpp.o"
+"CMakeFiles/daily.dir/2015.cpp.o"
 
 # External object files for target daily
 daily_EXTERNAL_OBJECTS =
 
-daily: CMakeFiles/daily.dir/5657.cpp.o
+daily: CMakeFiles/daily.dir/2015.cpp.o
 daily: CMakeFiles/daily.dir/build.make
 daily: CMakeFiles/daily.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable daily"
