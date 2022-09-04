@@ -1,16 +1,18 @@
 # daily
-daily programing
+daily acm training
 
 ~
 2022.9.1
 
 2022.9.3 
 
-P2303Longge的问题
+P2303 Longge的问题
 简单欧拉函数板子题，只要枚举因数进行计算即可。
 
 P5657 格雷码
 通过定义生成格雷码就行了
+
+2022.9.4
 
 P2015 二叉苹果树
 开始学习基础树形dp
