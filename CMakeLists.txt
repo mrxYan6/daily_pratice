@@ -4,4 +4,4 @@ project(daily)
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(LOCAL)
-add_executable(daily UVA11916.cpp)
+add_executable(daily 3846.cpp)
