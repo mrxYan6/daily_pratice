@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build",
-  "command": "/usr/bin/clang++ -DLOCAL  -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++2a -o CMakeFiles/daily.dir/2015.cpp.o -c /Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp",
-  "file": "/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/2015.cpp"
-}
-]

@@ -1,3 +1,0 @@
-/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles/daily.dir
-/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles/edit_cache.dir
-/Users/mrx/Library/CloudStorage/OneDrive-个人/programing/acm/daily/build/CMakeFiles/rebuild_cache.dir
