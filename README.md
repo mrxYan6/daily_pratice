@@ -32,3 +32,5 @@ daily acm training record
   - 2986 换根dp
 - 2022.9.22
   - sp7001 莫反入门题
+- 2022.9.24
+  - UVA10891 区间dp
