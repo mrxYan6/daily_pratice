@@ -34,3 +34,5 @@ daily acm training record
   - sp7001 莫反入门题
 - 2022.9.24
   - UVA10891 区间dp
+  - hdu4746 莫反+数论分块
+  - hdu5528 积性函数+枚举素因子
