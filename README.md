@@ -38,3 +38,5 @@ daily acm training record
   - hdu5528 积性函数+枚举素因子
 - 2022.9.27
   - CFGYM100287 循环矩阵的性质
+  - UVA12879 fft板子
+  - CF461B 树形dp基础题
