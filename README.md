@@ -36,3 +36,5 @@ daily acm training record
   - UVA10891 区间dp
   - hdu4746 莫反+数论分块
   - hdu5528 积性函数+枚举素因子
+- 2022.9.27
+  - CFGYM100287 循环矩阵的性质
