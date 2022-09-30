@@ -21,7 +21,9 @@ struct line {
 		return k < rhs.k;
 	}
 
-	ll operator ()(ll x) const { return k * x + b; }
+	ll operator ()(ll x) const {
+		return k * x + b;
+	}
 };
 
 struct ConvexHull {

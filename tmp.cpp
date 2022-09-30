@@ -1,69 +1,92 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <array>
+#include <iomanip>
+#include <stack>
 
-#define M 100
-struct node {
-	int i, j, v;
-};
+using ll = long long;
 
-struct tripletable {
-	struct node S[M];
-	int m, n, t;
-};
+struct A {
+	float a;
+	char opt;
+	int type;
 
-
-struct tripletable* create() {
-	int i;
-	struct tripletable* head = (struct tripletable*) malloc(sizeof(struct tripletable));
-	scanf("%d%d%d", &(head->m), &(head->n), &(head->t));
-
-	for (i = 0; i < head->t; i++)
-		scanf("%d%d%d", &(head->S[i].i), &(head->S[i].j), &(head->S[i].v));
-	return head;
-
-}
-
-
-void print(struct tripletable* head) {
-	int i;
-	for (i = 0; i < head->t; i++)
-		printf("%d %d %d\n", (head->S[i].i), (head->S[i].j), (head->S[i].v));
-}
-
-struct tripletable* trans(struct tripletable* t1) {
-	int i, p, j, q, k;
-	int num[100];
-	int cpot[100];
-	struct tripletable* t2 = (struct tripletable*) malloc(sizeof(struct tripletable));
-	t2->m = t1->n;
-	t2->n = t1->m;
-	t2->t = t1->t;
-	if (t1->t) {
-		for (i = 0; i < t1->n; i++) num[i] = 0;
-		for (i = 0; i < t1->t; i++) {
-			k = t1->S[i].j;
-			++num[k];
-		}
-		cpot[0] = 0;
-		for (i = 1; i < t1->n; i++)
-				cpot[i] = cpot[i - 1] + num[i - 1];
-		for (p = 0; p < t1->t; p++) {
-			j = t1->S[p].j;
-			q = cpot[j];
-			t2->S[q].i = t1->S[p].j;
-			t2->S[q].j = t1->S[p].i;
-			t2->S[q].v = t1->S[p].v;
-			cpot[j]++;
-		}
-
+	A(char o, float d) : a(d), opt(o) {
+		if (o != ' ')type = 1;
 	}
-	return t2;
+
+	A() {}
+};
+
+double getd(std::string str) {
+	int l = str.length();
+	double ret = 0;
+	int flag = 0;
+	if (str[0] == '-' || str[0] == '+')flag = 1;
+	int dot = 0;
+	for (int i = flag; i < l; i++) {
+		if (str[i] == '.') {
+			dot = i;
+			break;
+		}
+		ret = ret * 10 + str[i] - '0';
+	}
+	if (dot) {
+		double z = 1;
+		for (int i = dot + 1; i < l; i++) {
+			z *= 0.1;
+			ret += z * (str[i] - '0');
+		}
+	}
+	if (str[0] == '-')ret *= -1;
+	return ret;
 }
 
 int main() {
-	struct tripletable* head, * t2;
-	head = create();
-	t2 = trans(head);
-	print(t2);
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+	std::cout.tie(nullptr);
+
+	std::vector<A> ord;
+	std::string str;
+	while (std::cin >> str) {
+		if (str == "+")ord.emplace_back('+', 0);
+		else if (str == "-")ord.emplace_back('-', 0);
+		else if (str == "*")ord.emplace_back('*', 0);
+		else if (str == "/")ord.emplace_back('/', 0);
+		else ord.emplace_back(' ', getd(str));
+	}
+	std::stack<A> s;
+	std::reverse(ord.begin(), ord.end());
+	for (int i = 0; i < ord.size(); ++i) {
+		A temp = ord[i];
+		if (temp.type == 0) {
+			s.push(temp);
+		} else {
+			A num1 = s.top();
+			s.pop();
+			A num2 = s.top();
+			s.pop();
+			A res;
+			res.type = 0;
+			if (temp.opt == '+') {
+				res.a = num1.a + num2.a;
+			} else if (temp.opt == '-') {
+				res.a = num1.a - num2.a;
+			} else if (temp.opt == '*') {
+				res.a = num1.a * num2.a;
+			} else if (temp.opt == '/') {
+				if (num2.a == 0) {
+					std::cout << "ERROR\n";
+					return 0;
+				}
+				res.a = num1.a / num2.a;
+			}
+			s.push(res);
+		}
+//		i--;
+	}
+	std::cout << std::fixed << std::setprecision(1) << s.top().a;
 	return 0;
 }
