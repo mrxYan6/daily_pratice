@@ -186,12 +186,13 @@ private:
 const int mod = 1e9 + 7;
 using Z = Modular<mod>;
 
-Z sol(int x) {
+Z sol(ll x) {
 	std::string s = std::to_string(x);
 	int n = s.length();
-	std::vector<std::pair<int, Z>> f(n + 1);
-	std::function<std::pair<int, Z>(int, bool, bool)> dfs = [&](int pos, bool lead, bool limit) {
-		if (pos == n) return std::make_pair(!lead, Z(0));
+	std::vector<std::pair<int, Z>> f(n + 1, {-1, Z(0)});
+
+	std::function<std::pair<int, Z>(int, bool, bool)> dfs = [&](int pos, bool limit, bool lead) {
+		if (pos == n) return std::make_pair(int(!lead), Z(0));
 		if (f[pos].first != -1 && !limit && !lead) return f[pos];
 		ll up = limit ? s[pos] - '0' : 9;
 		Z ans = 0;
@@ -204,6 +205,7 @@ Z sol(int x) {
 		if (!lead && !limit) f[pos] = std::make_pair(cnt, ans);
 		return std::make_pair(cnt, ans);
 	};
+	return dfs(0, true, true).second;
 }
 
 int main() {
@@ -213,7 +215,7 @@ int main() {
 	int t;
 	std::cin >> t;
 	while (t--) {
-		int l, r;
+		ll l, r;
 		std::cin >> l >> r;
 		std::cout << sol(r) - sol(l - 1) << '\n';
 	}
