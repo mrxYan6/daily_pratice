@@ -212,6 +212,7 @@ int main() {
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(nullptr);
 	std::cout.tie(nullptr);
+
 	int t;
 	std::cin >> t;
 	while (t--) {
@@ -219,5 +220,6 @@ int main() {
 		std::cin >> l >> r;
 		std::cout << sol(r) - sol(l - 1) << '\n';
 	}
+
 	return 0;
 }
