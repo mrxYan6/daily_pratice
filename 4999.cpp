@@ -189,18 +189,18 @@ using Z = Modular<mod>;
 Z sol(ll x) {
 	std::string s = std::to_string(x);
 	int n = s.length();
-	std::vector<std::pair<int, Z>> f(n + 1, {-1, Z(0)});
+	std::vector<std::pair<ll, Z>> f(n + 1, {-1, Z(0)});
 
-	std::function<std::pair<int, Z>(int, bool, bool)> dfs = [&](int pos, bool limit, bool lead) {
-		if (pos == n) return std::make_pair(int(!lead), Z(0));
+	std::function<std::pair<ll, Z>(int, bool, bool)> dfs = [&](int pos, bool limit, bool lead) {
+		if (pos == n) return std::make_pair(ll(!lead), Z(0));
 		if (f[pos].first != -1 && !limit && !lead) return f[pos];
 		ll up = limit ? s[pos] - '0' : 9;
 		Z ans = 0;
-		int cnt = 0;
+		ll cnt = 0;
 		for (ll i = 0; i <= up; ++i) {
 			auto now = dfs(pos + 1, limit && i == s[pos] - '0', lead && !i);
 			cnt += now.first;
-			ans = ans + now.second + now.first * i;
+			ans = ans + now.second + 1ll * now.first * i % mod;
 		}
 		if (!lead && !limit) f[pos] = std::make_pair(cnt, ans);
 		return std::make_pair(cnt, ans);
