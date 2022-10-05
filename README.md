@@ -43,3 +43,5 @@ daily acm training record
   - CF708C 树形dp要点思维题
 - 2022.10.4
   - 1196 带权并查集板子
+- 2022.10.5
+  - 3807 lucas板子
