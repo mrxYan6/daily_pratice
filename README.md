@@ -41,3 +41,5 @@ daily acm training record
   - UVA12879 fft板子
   - CF461B 树形dp基础题
   - CF708C 树形dp要点思维题
+- 2022.10.4
+  - 1196 带权并查集板子

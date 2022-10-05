@@ -1,7 +1,6 @@
 //
 // Created by mrx on 2022/10/4.
 //
-
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -14,11 +13,14 @@ int main() {
 	std::cin.tie(nullptr);
 	std::cout.tie(nullptr);
 
-	ll n, m;
-	while (std::cin >> n >> m && n + m) {
-		if (n > m)std::swap(n, m);
-		std::cout << n * m * (n + m - 2) + 2 * n * (n - 1) * (3 * m - n - 1) / 3 << '\n';
-	}
+	std::vector<int> f(1e6 + 10);
+	f[3] = 0;
+	for (int i = 4; i <= 1e6; ++i)f[i] = f[i - 1] + ((i - 1) * (i - 2) / 2 - (i - 1) / 2) / 2;
 
+	int n;
+
+	while (std::cin >> n && n >= 3) {
+		std::cout << f[n] << '\n';
+	}
 	return 0;
 }
