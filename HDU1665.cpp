@@ -1,3 +1,6 @@
+//
+// Created by mrx on 2022/10/18.
+//
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -5,9 +8,15 @@
 #include <numeric>
 #include <cmath>
 #include <functional>
-#include <iomanip>
 
 using ll = long long;
+
+constexpr double eps = 1e-6;
+
+template<typename T>
+int sgn(T x) {
+	return std::abs(x) < eps ? 0 : x < 0 ? -1 : 1;
+}
 
 template<typename T>
 struct point {
@@ -71,6 +80,15 @@ struct point {
 	friend T dot(const point& lhs, const point& rhs) {
 		return lhs.x * rhs.x + lhs.y * rhs.y;
 	}
+
+	bool operator <(const point& rhs) const {
+		return x == rhs.x ? y < rhs.y : x < rhs.x;
+	}
+
+
+	bool operator ==(const point& rhs) const {
+		return std::abs(x - rhs.x) <= eps && std::abs(y - rhs.y) <= eps;
+	}
 };
 
 template<typename T>
@@ -106,33 +124,47 @@ using Ll = line<ll>;
 using Pd = point<long double>;
 using Ld = line<long double>;
 
+bool isCross(Pd a, Pd b, Pd i, Pd j) {
+	return sgn(cross(i - a, j - i)) * sgn(cross(i - b, j - i)) == -1 && sgn(cross(b - i, a - b)) * sgn(cross(b - j, a - b)) == -1;
+}
+
+bool onSeg(Pd a, Pd i, Pd j) {
+	return sgn(cross(i - a, j - a)) == 0 && sgn(dot(a - i, a - j)) < 0;
+}
+
+
 int main() {
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(nullptr);
 	std::cout.tie(nullptr);
 
-	int t;
-	std::cin >> t;
-	while (t--) {
-		std::vector<Pl> triangle(3);
-		for (int i = 0; i < 3; ++i)std::cin >> triangle[i];
-		std::vector<Pd> inner(3);
-		auto getP = [&](Pl A, Pl B, Pl C) {
-			double a1 = acos(dot(A - B, C - B) / abs(A - B) / abs(C - B));
-			Ld la(B, C);
-			la = la.rotate(a1 / 3);
-
-			double a2 = acos(dot(A - C, B - C) / abs(A - C) / abs(B - C));
-			Ld lb(C, A);
-			lb = lb.rotate(2 * a2 / 3);
-			return intersection(la, lb);
-		};
-		inner[0] = getP(triangle[0], triangle[1], triangle[2]);
-		inner[1] = getP(triangle[1], triangle[2], triangle[0]);
-		inner[2] = getP(triangle[2], triangle[0], triangle[1]);
-		for (int i = 0; i < 3; ++i)std::cout << std::fixed << std::setprecision(6) << inner[i] << ' ';
-		std::cout << '\n';
+	int n;
+	int cas = 1;
+	while (std::cin >> n && n) {
+		std::vector<Pd> pod(n);
+		std::vector<std::pair<Pd, Pd>> seg;
+		for (int i = 0; i < n; ++i) {
+			std::cin >> pod[i];
+			if (i)seg.emplace_back(pod[i - 1], pod[i]);
+		}
+		for (int i = 0; i < n - 1; ++i) {
+			for (int j = i + 1; j < n - 1; ++j) {
+				if (isCross(seg[i].first, seg[i].second, seg[j].first, seg[j].second)) {
+					pod.emplace_back(intersection(Ld(seg[i].first, seg[i].second), Ld(seg[j].first, seg[j].second)));
+				}
+			}
+		}
+		std::sort(pod.begin(), pod.end());
+		pod.erase(std::unique(pod.begin(), pod.end()), pod.end());
+		int Pcnt = pod.size();
+		int Ecnt = n - 1;
+		for (int i = 0; i < n - 1; ++i) {
+			for (int j = 0; j < Pcnt; ++j) {
+				if (onSeg(pod[j], seg[i].first, seg[i].second))Ecnt++;
+			}
+		}
+		int ans = 2 + Ecnt - Pcnt;
+		std::cout << "Case " << cas++ << ": There are " << ans << " pieces.\n";
 	}
-
 	return 0;
 }
