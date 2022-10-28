@@ -45,3 +45,5 @@ daily acm training record
   - 1196 带权并查集板子
 - 2022.10.5
   - 3807 lucas板子
+- 2022.10.28
+  - CFGYM103447G 图上概率dp
