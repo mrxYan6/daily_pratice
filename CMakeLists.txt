@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.2)
 project(daily)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 add_compile_definitions(LOCAL)
-add_executable(daily  UVA1099.cpp)
+add_executable(daily UVA10652.cpp)
