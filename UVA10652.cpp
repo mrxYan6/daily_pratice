@@ -10,6 +10,7 @@
 #include <queue>
 #include <array>
 #include <map>
+#include <iomanip>
 
 using i64 = long long;
 
@@ -153,24 +154,55 @@ bool onSeg(Pd a, Pd i, Pd j) {
 int dx[] = {1, 1, -1, -1};
 int dy[] = {1, -1, 1, -1};
 
+std::vector<Pd> ConvexHull(std::vector<Pd> points) {
+	int n = points.size();
+	std::sort(points.begin(), points.end());
+	std::deque<Pd> dq;
+
+	for (auto& point: points) {
+		while (dq.size() > 1 && sgn(cross(dq[dq.size() - 1] - dq[dq.size() - 2], point - dq[dq.size() - 2])) <= 0)dq.pop_back();
+		dq.push_back(point);
+	}
+
+	int k = int(dq.size());
+	for (int i = n - 1; i >= 0; i--) {
+		while (dq.size() > k && sgn(cross(dq[dq.size() - 1] - dq[dq.size() - 2], points[i] - dq[dq.size() - 2])) <= 0)dq.pop_back();
+		dq.push_back(points[i]);
+	}
+
+	std::vector<Pd> ans(dq.begin(), dq.end());
+	return ans;
+}
+
 void sol() {
 	int n;
 	std::cin >> n;
 
 	std::vector<Pd> points;
-	double ans = 0;
+	double fz = 0;
 	for (int i = 0; i < n; ++i) {
 		double x, y, w, h, phi;
 		std::cin >> x >> y >> w >> h >> phi;
-		ans += w * h;
+		fz += w * h;
 		Pd cent(x, y);
 		for (int j = 0; j < 4; ++j) {
-			Pd vertex = cent + Pd(w / 2 * dx[j], h / 2 * dy[j]).rotate(phi);
+			Pd vertex = cent + Pd(w / 2 * dx[j], h / 2 * dy[j]).rotate(-phi / 180 * acos(-1));
 			points.push_back(vertex);
 		}
 	}
-	for (auto x: points)std::cout << x << '\n';
-	std::cerr << ans << '\n';
+
+//	for (auto x: points)std::cout << x << '\n';
+	std::vector<Pd> convexHull = ConvexHull(points);
+	int m = convexHull.size();
+//	for (auto x: convexHull)std::cout << x << '\n';
+	double fm = 0;
+	for (int i = 0; i < m; ++i) {
+		fm -= cross(convexHull[i] - convexHull[(i + m - 1) % m], convexHull[i] - Pd(0, 0)) / 2;
+	}
+//	std::cerr << fz << ' ' << fm << '\n';
+//	std::cerr << fz / fm << '\n';
+	double ans = fz / fm * 100;
+	std::cout << std::fixed << std::setprecision(1)<<ans<<" %\n";
 }
 
 int main() {
