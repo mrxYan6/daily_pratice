@@ -1,5 +1,5 @@
 //
-// Created by mrx on 2022/10/30.
+// Created by mrx on 2022/10/31.
 //
 #include <functional>
 #include <algorithm>
@@ -13,6 +13,7 @@
 #include <iomanip>
 
 using i64 = long long;
+
 
 constexpr double eps = 1e-6;
 
@@ -140,7 +141,7 @@ struct Line {
 	}
 };
 
-using Pd = Point<double>;
+using Ll = Line<i64>;
 using Ld = Line<double>;
 
 bool isCross(Pd a, Pd b, Pd i, Pd j) {
@@ -151,13 +152,10 @@ bool onSeg(Pd a, Pd i, Pd j) {
 	return sgn(cross(i - a, j - a)) == 0 && sgn(dot(a - i, a - j)) < 0;
 }
 
-int dx[] = {1, 1, -1, -1};
-int dy[] = {1, -1, 1, -1};
-
-std::vector<Pd> ConvexHull(std::vector<Pd> points) {
+std::vector<Pl> ConvexHull(std::vector<Pl> points) {
 	int n = points.size();
 	std::sort(points.begin(), points.end());
-	std::deque<Pd> dq;
+	std::deque<Pl> dq;
 
 	for (auto& point: points) {
 		while (dq.size() > 1 && sgn(cross(dq[dq.size() - 1] - dq[dq.size() - 2], point - dq[dq.size() - 2])) <= 0)dq.pop_back();
@@ -170,39 +168,44 @@ std::vector<Pd> ConvexHull(std::vector<Pd> points) {
 		dq.push_back(points[i]);
 	}
 
-	std::vector<Pd> ans(dq.begin(), dq.end());
+	std::vector<Pl> ans(dq.begin(), dq.end());
 	return ans;
+}
+
+std::array<i64, 3> getNorm(Ll l) {
+	return {l.v.y, -l.v.x, -l.a.x * l.v.y + l.v.x * l.a.y};
 }
 
 void sol() {
 	int n;
 	std::cin >> n;
-
-	std::vector<Pd> points;
-	double fz = 0;
+	std::vector<Pl> points(n);
+	for (int i = 0; i < n; ++i)std::cin >> points[i];
+	i64 sumX = 0, sumY = 0;
 	for (int i = 0; i < n; ++i) {
-		double x, y, w, h, phi;
-		std::cin >> x >> y >> w >> h >> phi;
-		fz += w * h;
-		Pd cent(x, y);
-		for (int j = 0; j < 4; ++j) {
-			Pd vertex = cent + Pd(w / 2 * dx[j], h / 2 * dy[j]).rotate(-phi / 180 * acos(-1));
-			points.push_back(vertex);
-		}
+		sumX += points[i].x;
+		sumY += points[i].y;
 	}
 
-//	for (auto x: points)std::cout << x << '\n';
-	std::vector<Pd> convexHull = ConvexHull(points);
-	int m = convexHull.size();
-//	for (auto x: convexHull)std::cout << x << '\n';
-	double fm = 0;
-	for (int i = 0; i < m; ++i) {
-		fm -= cross(convexHull[i] - convexHull[(i + m - 1) % m], convexHull[i] - Pd(0, 0)) / 2;
-	}
-//	std::cerr << fz << ' ' << fm << '\n';
-//	std::cerr << fz / fm << '\n';
-	double ans = fz / fm * 100;
-	std::cout << std::fixed << std::setprecision(1) << ans << " %\n";
+	if (n > 1) {
+		std::vector<Pl> hull = ConvexHull(points);
+//	for (auto x: hull)std::cerr << x << '\n';
+
+		double ans = 2e18;
+		int m = hull.size();
+		for (int i = 1; i < m; ++i) {
+//		std::cerr << hull[i - 1] << ' ' << hull[i] << '\n';
+			Ll line(hull[i - 1], hull[i]);
+			auto coefficient = getNorm(line);
+			double fm = abs(Pl(coefficient[0], coefficient[1]));
+//		for (auto x: coefficient)std::cerr << x << ' ';
+//		std::cerr << '\n';
+			i64 fz = std::abs(coefficient[0] * sumX + coefficient[1] * sumY + n * coefficient[2]);
+			ans = std::min(ans, fz / fm);
+		}
+
+		std::cout << std::fixed << std::setprecision(3) << ans / n << '\n';
+	} else std::cout << "0.000\n";
 }
 
 int main() {
@@ -211,7 +214,8 @@ int main() {
 	std::cout.tie(nullptr);
 	int t;
 	std::cin >> t;
-	while (t--) {
+	for (int cas = 1; cas <= t; ++cas) {
+		std::cout << "Case #" << cas << ": ";
 		sol();
 	}
 	return 0;

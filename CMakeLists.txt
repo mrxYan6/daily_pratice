@@ -3,4 +3,4 @@ project(daily)
 set(CMAKE_CXX_STANDARD 11)
 
 add_compile_definitions(LOCAL)
-add_executable(daily UVA10652.cpp " UVA11168.cpp")
+add_executable(daily UVA10256.cpp)
