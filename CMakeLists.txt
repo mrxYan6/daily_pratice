@@ -3,4 +3,4 @@ project(daily)
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(LOCAL)
-add_executable(daily CFGYM013428E.cpp)
+add_executable(daily P2924.cpp)
