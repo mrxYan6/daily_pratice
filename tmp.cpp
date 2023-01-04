@@ -1,75 +1,82 @@
-//
-// Created by meiru on 2022/12/6.
-//
-#include <functional>
-#include <algorithm>
+#include <stdio.h>
 #include <iostream>
-#include <numeric>
-#include <vector>
+#include <cstdlib>
 #include <cmath>
+#include <cctype>
+#include <string>
+#include <cstring>
+#include <algorithm>
+#include <stack>
 #include <queue>
-#include <array>
+#include <set>
 #include <map>
+#include <ctime>
+#include <vector>
+#include <fstream>
+#include <list>
+#include <iomanip>
+#include <numeric>
 
-using i64 = long long;
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define ms(s) memset(s, 0, sizeof(s))
+const int inf = 0x3f3f3f3f;
+const int N = 3e5 + 10;
 
-using ll = long long;
 
-long long exgcd(long long a, long long b, long long& x, long long& y) {
-	if (b == 0) {
-		x = 1, y = 0;
-		return a;
+bool isLeap(int y) {
+	return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+}
+
+int daysOfMonth(int y, int m) {
+	int day[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	if (m != 2)
+		return day[m - 1];
+	else
+		return 28 + isLeap(y);
+}
+
+int daysOfDate(int year, int month, int day) {
+	for (int y = 1; y < year; y++)
+		day += 365 + isLeap(y);
+	for (int m = 1; m < month; m++)
+		day += daysOfMonth(year, month);
+	return day;
+}
+
+
+void solve() {
+	string s;
+	cin >> s;
+	int sum = 0, year = 0, mon = 0, day = 0, f = 0;
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] != '/') {
+			s[i] -= '0';
+			sum *= 10;
+			sum += s[i];
+		} else {
+			if (f == 0) year = sum;
+			else if (f == 1) mon = sum;
+			sum = 0;
+			f++;
+		}
 	}
-	ll d = exgcd(b, a % b, x, y);
-	ll t = x;
-	x = y;
-	y = t - a / b * x;
-	return d;
+	day = sum;
+	//cout << year << mon <<day << endl;
+	int x = daysOfDate(year, mon, day) - daysOfDate(2000, 1, 1);
+	std::cerr << x << '\n';
+	if (x % 5 == 0 || x % 5 == 1 || x % 5 == 2) {
+		cout << "Fishing" << endl;
+	} else cout << "Resting" << endl;
+
 }
 
 int main() {
-	std::ios::sync_with_stdio(false);
-	std::cin.tie(nullptr);
-	std::cout.tie(nullptr);
-
-	i64 n, m;
-	std::cin >> n >> m;
-	i64 sum = 0;
-	for (int i = 0; i < n; ++i) {
-		i64 x;
-		std::cin >> x;
-		(sum += x) %= m;
-	}
-	if (m == 1) {
-		std::cout << "0\n0 0\n";
-		return 0;
-	}
-	if (!(n & 1)) {
-		i64 mid, t;
-		i64 g = exgcd(n / 2, m, mid, t);
-		i64 res = sum % g;
-		i64 cnt = (res - sum) / g;
-		mid = mid * cnt % m;
-		mid = (mid % m + m) % m;
-		std::cout << res << '\n';
-		if (mid & 1) {
-			i64 d = (mid - 1) / 2 - n / 2;
-			d = (m + d % m) % m;
-			std::cout << d << ' ' << 1 << '\n';
-		} else {
-			i64 d = mid / 2;
-			d = (m + d % m) % m;
-			std::cout << d << ' ' << 0 << '\n';
-		}
-	} else {
-		i64 mid, t;
-		i64 g = exgcd(n, m, mid, t);
-		i64 res = sum % g;
-		i64 cnt = (res - sum) / g;
-		mid = mid * cnt % m;
-		mid = (mid % m + m) % m;
-		std::cout << res << '\n';
-		std::cout << (m + mid % m) % m << ' ' << 0 << '\n';
+	int t;
+	cin >> t;
+	while (t--) {
+		solve();
 	}
 	return 0;
 }
