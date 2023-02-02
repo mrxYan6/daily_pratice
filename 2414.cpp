@@ -1,9 +1,6 @@
 //
 // Created by meiru on 2023/1/14.
 //
-//
-// Created by meiru on 2023/1/14.
-//
 
 #include <functional>
 #include <algorithm>
@@ -18,85 +15,106 @@
 
 using i64 = long long;
 
-struct Trie {
-	int cnt;
-	std::vector<Trie*> nxt;
-	Trie* fail;
-	int end;
+struct Fin {
+	std::vector<int> f;
+	int n;
 
-	Trie() : nxt(26, nullptr), fail(nullptr), end(0), cnt(0) {}
+	Fin(int n) : n(n), f(n + 1) {}
 
-	~Trie() { for (auto x: nxt)delete x; }
+	int qry(int x) {
+		int ret = 0;
+		for (int i = x; i; i -= i & -i)ret += f[i];
+		return ret;
+	}
+
+	void add(int x, int v) {
+		for (int i = x; i <= n; ++i) f[i] += v;
+	}
 };
 
+struct acam {
+	struct Trie {
+		int dfn;
+		std::vector<int> nxt;
+		int fail, prev;
+		int end;
 
-void clear(Trie* root) {
-	for (auto x: root->nxt) {
-		if (x != nullptr) {
-			clear(x);
-		}
+		Trie() : nxt(26, 0), fail(0), end(0), cnt(0), prev(0) {}
+	};
+
+	std::vector<Trie> nodes;
+
+	acam() : nodes(1) {}
+
+	int NEW() {
+		int id = nodes.size();
+		nodes.emplace_back();
+		return id;
 	}
-	root->end = 0;
-}
 
-void insert(Trie* root, const std::deque<char>& s) {
-	Trie* p = root;
-	for (auto x: s) {
-		int id = x - 'a';
-		if (p->nxt[id] == nullptr) {
-			p->nxt[id] = new Trie;
+	void build() {
+		std::queue<int> q;
+		for (int i = 0; i < 26; i++) {
+			if (nodes[0].nxt[i]) {
+				q.push(nodes[0].nxt[i]);
+			}
 		}
-		p = p->nxt[id];
-	}
-	p->end = s.size();
-	p->cnt++;
-}
-
-void build(Trie* root) {
-	std::queue<Trie*> Q;
-	Trie* p = root;
-	root->fail = nullptr;
-	Q.push(p);
-	while (!Q.empty()) {
-		p = Q.front();
-		Q.pop();
-		for (int i = 0; i < 26; ++i) {
-			if (p->nxt[i] != nullptr) {
-				if (p == root)p->nxt[i]->fail = p;
-				else {
-					Trie* tmp = p->fail;
-					while (tmp != nullptr) {
-						if (tmp->nxt[i] != nullptr) {
-							p->nxt[i]->fail = tmp->nxt[i];
-							break;
-						}
-						tmp = tmp->fail;
-					}
-					if (tmp == nullptr)p->nxt[i]->fail = root;
+		while (!q.empty()) {
+			auto u = q.front();
+			q.pop();
+			for (int i = 0; i < 26; i++) {
+				if (nodes[u].nxt[i]) {
+					nodes[nodes[u].nxt[i]].fail = nodes[nodes[u].fail].nxt[i];
+					q.push(nodes[u].nxt[i]);
+				} else {
+					nodes[u].nxt[i] = nodes[nodes[u].fail].nxt[i];
 				}
-				Q.push(p->nxt[i]);
-			} else {
-				if (p == root)p->nxt[i] = p;
-				else p->nxt[i] = p->fail->nxt[i];
 			}
 		}
 	}
-}
+
+	Trie& operator [](int idx) { return nodes[idx]; }
+};
+
 
 void solve() {
 	std::string s;
 	std::cin >> s;
 
+	acam AC;
+	int cur = 0;
+	std::vector<int> ends;
+	for (auto x: s) {
+		if (x == 'B')cur = AC[cur].prev;
+		else if (x == 'P') {
+			AC[cur].end++;
+			ends.push_back(cur);
+		} else {
+			if (AC[cur].nxt[x - 'a'] == 0) {
+				AC[cur].nxt[x - 'a'] = AC.NEW();
+			}
+			cur = AC[cur].nxt[x - 'a'];
+		}
+	}
+
 	int n;
 	std::cin >> n;
-	std::deque<char> dq;
-
-	Trie* root = new Trie;
+	std::vector<std::tuple<int, int, int>> qry(n);
 	for (int i = 0; i < n; ++i) {
-		if (s[i] == 'P')insert(root, dq);
-		else if (s[i] == 'B')dq.pop_back();
-		else dq.push_back(s[i]);
+		auto& [u, v, id] = qry[i];
+		id = i;
+		std::cin >> u >> v;
+		u--, v--;
 	}
+
+	std::vector adj(AC.nodes.size(), std::vector<int>());
+
+	AC.build();
+	int dfn = 0;
+	std::function<void(int)> dfs = [&](int x) {
+		AC[x].dfn = ++dfn;
+
+	};
 
 }
 
