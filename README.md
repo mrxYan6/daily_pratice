@@ -55,3 +55,5 @@ daily acm training record
     - CF118D 简单dp
     - CF1365D 简单bfs
     - CF467C 简单dp
+- 2023.2.23
+    - CF977F 记录前驱的简单dp
