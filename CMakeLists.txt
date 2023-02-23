@@ -3,4 +3,4 @@ project(daily)
 set(CMAKE_CXX_STANDARD 20 -O2)
 
 add_compile_definitions(LOCAL)
-add_executable(daily CF339D.cpp)
+add_executable(daily CF467C.cpp CF977F.cpp)

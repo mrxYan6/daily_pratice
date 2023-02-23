@@ -51,3 +51,7 @@ daily acm training record
     - CF466C 前缀和简单题
     - CF474D 简单dp
     - CF339D 考虑每一层的数字，暴力更新
+- 2023.2.21
+    - CF118D 简单dp
+    - CF1365D 简单bfs
+    - CF467C 简单dp
