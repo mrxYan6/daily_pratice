@@ -1,5 +1,5 @@
 //
-// Created by mrx on 2023/1/29.
+// Created by mrx on 2023/3/7.
 //
 #include <functional>
 #include <algorithm>
@@ -189,27 +189,46 @@ private:
     Type value;
 };
 
-const int mod = 999911659;
+const int mod = 998244353;
 using Z = Modular<mod>;
 
 void solve() {
-    int n, p;
 
-    std::cin >> n >> p;
-    std::string t = std::to_string(n);
-    std::vector<int> dp(p);
-    for (int i = 0; i < n; ++i) {
-        
+    std::vector<int> primes, vis(1e6 + 100);
+    vis[1] = 1;
+    for (int i = 2; i <= 1e6; ++i) {
+        if (!vis[i])primes.push_back(i);
+        for (auto p: primes) {
+            if (i * p > 1e6)break;
+            vis[i * p] = 1;
+            if (p % i == 0)break;
+        }
     }
+    std::vector<Z> facts(1e6 + 1), inv(1e6 + 1);
+    facts[0] = 1, inv[0] = 1;
+    for (int i = 1; i <= 1e6; ++i)facts[i] = facts[i - 1] * i, inv[i] = facts[i].inv();
+
+    int n;
+    std::cin >> n;
+    std::vector<int> a(n * 2);
+    std::map<int, int> cnt;
+    for (int i = 0; i < n * 2; ++i)std::cin >> a[i], cnt[a[i]]++;
+    std::vector<Z> dp(n + 1);
+    dp[0] = 1;
+    for (auto [x, c]: cnt) {
+        for (int i = n; i >= 0; i--) {
+            if (i < n && !vis[x]) {
+                dp[i + 1] += dp[i] * inv[c - 1];
+            }
+            dp[i] *= inv[c];
+        }
+    }
+    std::cout << dp[n] * facts[n] << '\n';
 }
 
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-
-    int n;
-    std::cin >> n;
-    while (n--)solve();
-
+    solve();
     return 0;
 }

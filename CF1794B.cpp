@@ -1,3 +1,6 @@
+//
+// Created by mrx on 2023/3/7.
+//
 #include <functional>
 #include <algorithm>
 #include <iostream>
@@ -11,11 +14,18 @@
 using i64 = long long;
 
 void solve() {
-    i64 d, k, n;
-    std::cin >> d >> k >> n;
-    i64 rest_time = (n - 1) / d;
-    i64 remain = (n - 1) % d + 1;
-    std::cout << rest_time * (k + d) + remain << '\n';
+    int n;
+    std::cin >> n;
+    std::vector<int> a(n);
+    for (int i = 0; i < n; ++i)std::cin >> a[i];
+    for (int i = 0; i < n; ++i) {
+        while (a[i] < 2)a[i]++;
+    }
+    for (int i = 1; i < n; ++i) {
+        while (a[i] % a[i - 1] == 0)a[i]++;
+    }
+    for (auto x: a)std::cout << x << ' ';
+    std::cout << '\n';
 }
 
 int main() {
