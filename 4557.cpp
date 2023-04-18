@@ -100,12 +100,11 @@ std::vector<Pl> minkowski(std::vector<Pl> hullA, std::vector<Pl> hullB) {
     std::vector<Pl> sega(n), segb(m);
     for (int i = 1; i <= n; ++i) sega[i - 1] = hullA[i] - hullA[i - 1];
     for (int i = 1; i <= m; ++i) segb[i - 1] = hullB[i] - hullB[i - 1];
-
     std::vector<Pl> ans(n + m);
     ans[0] = hullA[0] + hullB[0];
     for (int i = 1, j = 0, k = 0; i < n + m; ++i) {
         ans[i] = ans[i - 1];
-        if (j < n - 1 && (k == m || sgn(cross(sega[j], segb[k])) > 0)) ans[i] += sega[j++];
+        if (j < n && (k == m || sgn(cross(sega[j], segb[k])) >= 0)) ans[i] += sega[j++];
         else ans[i] += segb[k++];
     }
     return ConvexHull(ans);
@@ -123,33 +122,42 @@ void solve() {
         point.x = -point.x, point.y = -point.y;
     }
     auto hullA = ConvexHull(pointsA);
+//    std::cerr << "HA:\n";
+//    for (auto x: hullA)std::cerr << x << '\n';
     auto hullB = ConvexHull(pointsB);
+//    std::cerr << "HB:\n";
+//    for (auto x: hullB)std::cerr << x << '\n';
     auto A_B = minkowski(hullA, hullB);
     std::vector<Pl> lines;
     for (int i = 0; i + 1 < A_B.size(); i++) {
         lines.emplace_back(A_B[i] - A_B[0]);
     }
+//    std::cerr << "sum:\n";
+//    for (auto x: A_B)std::cerr << x << '\n';
 
     auto in_hull = [](Pl p, std::vector<Pl>& lines) {
-        if (cross(lines.back(), p) > 0 || cross(lines[0], p) < 0) return false;
+        if (cross(lines.back(), p) > 0 || cross(p, lines[0]) > 0) return false;
+//        std::cout << p << "fuck\n";
         int pos = std::lower_bound(lines.begin(), lines.end(), p, [&](auto x, auto y) {
-            return sgn(cross(x, y)) > 0;
+            return sgn(cross(x, y)) > 0 || (cross(x, y) == 0 && abs2(x) < abs2(y));
         }) - lines.begin();
+        pos = (pos + lines.size() - 1) % lines.size();
+//        std::cout << pos << ' ' << lines.size() << "!!!";
+//        std::cout << lines[pos] << '\n';
         return cross(p - lines[pos], lines[(pos + 1) % lines.size()] - lines[pos]) <= 0;
     };
 
     while (q--) {
         Pl x;
         std::cin >> x;
-        if (in_hull(x - A_B[0], lines))std::cout << 1 << '\n';
-        else std::cout << 0 << '\n';
+        std::cout << in_hull(x - A_B[0], lines) << '\n';
     }
 }
 
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-
+    freopen("my.err", "w", stderr);
     solve();
 
     return 0;
