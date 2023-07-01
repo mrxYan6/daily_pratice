@@ -1,8 +1,10 @@
-//
-// Created by mrx on 2022/6/3.
-//
-//template
-#include <cstdio>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <functional>
+#include <iostream>
+
+using i64 = long long;
 
 namespace Maker {
 
@@ -25,9 +27,9 @@ namespace Maker {
 
     template<typename T>
     inline void qr(T &x) {
-        char ch = GetChar(), lst = ' ';
-        while ((ch > '9') || (ch < '0')) lst = ch, ch = GetChar();
-        while ((ch >= '0') && (ch <= '9')) x = (x << 1) + (x << 3) + (ch ^ 48), ch = GetChar();
+        char ans = GetChar(), lst = ' ';
+        while ((ans > '9') || (ans < '0')) lst = ans, ans = GetChar();
+        while ((ans >= '0') && (ans <= '9')) x = (x << 1) + (x << 3) + (ans ^ 48), ans = GetChar();
         if (lst == '-') x = -x;
     }
 
@@ -96,18 +98,13 @@ struct nod {
     bool now;
 };
 
-#include "deque"
-
 int main() {
-#ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-#endif
     scanf("%d", &n);
     Maker::Begin(n);
-    long long ch[4] = {0};
+
+    std::vector<i64> res(4, 0);
     std::deque<nod> q;
-    int id = 1;
-    for (int x, y, z; n; --n) {
+    for (int x, y, z, i = 1; i <= n; ++i) {
         Maker::Get_Nextline(x, y, z);
         int ans = -1;
         if (x == 0) {
@@ -151,14 +148,14 @@ int main() {
                     else ans = (z) % 2;
                 }
             }
-            if (ans == 1)ch[0]++;
-            if (ans == 0 && id & 1)ch[1]++;
-            if (ans == 1 && id % 2 == 0)ch[2]++;
-            if (ans == 0 && id % 1024 == 0)ch[3]++;
+            if (ans == 1)res[0]++;
+            if (ans == 0 && (i & 1))res[1]++;
+            if (ans == 1 && i % 2 == 0)res[2]++;
+            if (ans == 0 && i % 1024 == 0)res[3]++;
         }
-        id++;
     }
-    printf("%d %d %d %d\n", ch[0], ch[1], ch[2], ch[3]);
-    //print your ans here
+
+    std::cout << res[0] << ' ' << res[1] << ' ' << res[2] << ' ' << res[3] << '\n';
+
     return 0;
 }

@@ -2,6 +2,8 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <functional>
+
 
 using i64 = long long;
 
@@ -38,6 +40,7 @@ struct trie {
         }
         // std::cout << s << "::RT" << cur << '\n';
         end[cur]++;
+        times[cur]++;
     }
 
     int find(const std::string s) {
@@ -52,51 +55,94 @@ struct trie {
         return end[cur] != 0;
     }
 
-    int dfs (const std::string s, int rt, int pos, int modify, int t) {
-        if (pos == s.length() && modify == 1 && times[rt] < t) {
-            // std::cout << "!!!" << rt << '\n';
-            times[rt] = t;
-            return end[rt];
-        }
-
-        auto c = s[pos] - 'a';
-
-        int ans = 0;
-
-        if (modify == 0) ans += dfs(s, rt, pos + 1, 1, t); //delete
-
+    int cnt = 0;
+    i64 ans = 0;
+    void dfs1 (int rt) {
+        int& cnt = times[rt];
         for (int i = 0; i < 26; ++i) {
-            if (nxt[rt][i] && i != c && modify == 0) {
-                ans += dfs(s, nxt[rt][i], pos + 1, 1, t); //replace
-                ans += dfs(s, nxt[rt][i], pos, 1, t); //insert
+            if (nxt[rt][i] != 0) {
+                dfs1(nxt[rt][i]);
+                cnt += times[nxt[rt][i]];
             }
         }
-        
-        if (nxt[rt][c] != 0) ans += dfs(s, nxt[rt][c], pos + 1, modify, t); //keep
-
-        return ans;
+        std::sort(nxt[rt].begin(), nxt[rt].end(), [&](int a, int b) {
+            return times[a] < times[b];
+        });
     }
+    void dfs (int rt, int top) {
+        int dfn = 0;
+        if (end[rt] != 0) {
+            dfn = ++cnt;
+            // std::cout << "end : " << rt << ' ' << top << ' ' << dfn << '\n';
+            ans += dfn - top;
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (nxt[rt][i] != 0) {
+                // std::cout << char (i + 'a') << '\n';
+                // std::cout << rt << "->" << nxt[rt][i] << '\n';
+                // std::cout << end[rt] << ' ' << dfn << ' ' << cnt << '\n';
+                // std::cout << "ans : " << ans << ' ' << '\n';
+                dfs(nxt[rt][i], dfn);
+            }
+        }
+    } 
 
 };
 
 void solve() {
-    int n, m;
-    std::cin >> n >> m;
+    int n;
+    std::cin >> n;
 
     std::vector<std::string> str(n);
     for (auto &x : str) std::cin >> x;
+    for (auto &x : str) std::reverse(x.begin(), x.end());
 
     trie T;
     for (auto x : str) {
         T.insert(x);
     }
 
-    for (int i = 1; i <= m; ++i) {
-        std::string s;
-        std::cin >> s;
-        if (T.find(s)) std::cout << -1 << '\n';
-        else std::cout << T.dfs(s, 0, 0, 0, i) << '\n';
-    }
+    std::vector<std::vector<int>> G(T.end.size());
+    std::function<void(int, int)> dfs = [&] (int rt, int top) {
+        if (T.end[rt] != 0) {
+            G[top].emplace_back(rt);
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (T.nxt[rt][i] != 0) {
+                dfs(T.nxt[rt][i], T.end[rt] != 0 ? rt : top);
+            }
+        }
+    };
+    dfs(0, 0);
+
+    
+    std::vector<int> size(G.size());
+    std::function<void(int)> get = [&] (int rt) {
+        size[rt] = T.end[rt] != 0;
+        for (auto x : G[rt]) {
+            get(x);
+            size[rt] += size[x];
+        }
+        std::sort(G[rt].begin(), G[rt].end(), [&](int a, int b) {
+            return size[a] < size[b];
+        });
+    };
+
+    get(0);
+    int cnt = 0;
+    i64 ans = 0;
+    std::function<void(int)> get_ans = [&] (int rt) {
+        int dfn = cnt++;
+        for (auto x : G[rt]) {
+            // std::cout << "R:" << rt << ' '<< x << ' ' << dfn << ' ' << cnt << '\n';
+            ans += cnt - dfn;
+            get_ans(x);
+        }
+    };
+    get_ans(0);
+    
+    std::cout << ans << '\n';
+
 }
 
 int main() {

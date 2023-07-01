@@ -1,4 +1,5 @@
-= nullptr) {
-        //     std::cout << (char)('a' + most) << "\n";
-        //     nxt[most]->out_put(1);
+
+        // for (auto y : mat) {
+        //     for (auto x : y) std::cout << x << ' ';
+        //     std::cout << '\n';
         // }
