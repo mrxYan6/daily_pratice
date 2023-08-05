@@ -1,13 +1,17 @@
-//
-// Created by meiru on 2022/8/22.
-//
+#include <iostream>
+#include <vector>
+#include <functional>
+#include <unordered_map>
+#include <array>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
 
-#include <bits/stdc++.h>
 
-using ll = long long;
+using i64 = long long;
 
-ll quick_power(ll base, ll fact, ll mod) {
-    ll ans = 1;
+i64 power(i64 base, i64 fact, i64 mod) {
+    i64 ans = 1;
     while (fact) {
         if (fact & 1) ans = ans * base % mod;
         base = base * base % mod;
@@ -16,28 +20,23 @@ ll quick_power(ll base, ll fact, ll mod) {
     return ans;
 }
 
-
-ll exgcd(ll a, ll b, ll &x, ll &y) {
-    if (b == 0) {
-        x = 1, y = 0;
-        return a;
-    }
-    ll d = exgcd(b, a % b, x, y);
-    ll t = x;
-    x = y;
-    y = t - a / b * x;
-    return d;
+std::array<i64, 3> exgcd(i64 a, i64 b) {
+	if (!b) {
+		return {a, 1, 0};
+	}
+	auto [g, x, y] = exgcd(b, a % b);
+	return {g, y, x - a / b * y};
 }
 
-ll bsgs(ll a, ll b, ll p) {
-    std::unordered_map<ll, ll> mp;
-    ll m = ceil(sqrt(p));
+i64 bsgs(i64 a, i64 b, i64 p) {
+    std::unordered_map<i64, i64> mp;
+    i64 m = ceil(sqrt(p));
     b %= p;
     for (int i = 1; i <= m; i++) {
         b = a * b % p;
         mp[b] = i;
     }
-    ll tmp = quick_power(a, m, p);
+    i64 tmp = power(a, m, p);
     b = 1;
     for (int i = 1; i <= m; i++) {
         b = b * tmp % p;
@@ -46,39 +45,34 @@ ll bsgs(ll a, ll b, ll p) {
     return -1;
 }
 
-ll inv(ll a, ll b) {
-    ll x, y;
-    exgcd(a, b, x, y);
+i64 inv(i64 a, i64 b) {
+    auto [g, x, y] = exgcd(a, b);
     return (x % b + b) % b;
 }
 
-ll ex_bsgs(ll a, ll b, ll p) {
+//-1: no solution
+i64 ex_bsgs(i64 a, i64 b, i64 p) {
     if (b == 1 || p == 1)return 0;
-    ll g = std::__gcd(a, p), k = 0, na = 1;
+    i64 g = std::gcd(a, p), k = 0, na = 1;
     while (g > 1) {
         if (b % g != 0)return -1;
         k++, b /= g, p /= g, na = na * (a / g) % p;
         if (na == b)return k;
-        g = std::__gcd(a, p);
+        g = std::gcd(a, p);
     }
-    ll f = bsgs(a, b * inv(na, p) % p, p);
+    i64 f = bsgs(a, b * inv(na, p) % p, p);
     if (f == -1)return -1;
     return f + k;
 }
 
 int main() {
-#ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-#endif
-#ifdef ONLINE_JUDGE
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-#endif
-    ll a, b, p;
+    
+    i64 a, b, p;
     while (std::cin >> a >> p >> b && a + b + p) {
         a %= p, b %= p;
-        ll ans = ex_bsgs(a, b, p);
+        i64 ans = ex_bsgs(a, b, p);
         if (ans == -1)std::cout << "No Solution\n";
         else std::cout << ans << '\n';
     }

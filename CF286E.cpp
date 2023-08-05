@@ -473,7 +473,7 @@ void solve() {
         if (res[i] && !a[i]) {
             std::cout << "NO\n";
             return;
-        } else if(res[i].val == 2) {
+        } else if(res[i].val() == 2) {
             ans.push_back(i);
         }
     }

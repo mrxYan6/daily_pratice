@@ -1,37 +1,60 @@
 #include <vector>
 #include <iostream>
-
-//c3,k -> c4,k
-//c3,k -> c4,k
-//c3,k -> c4,k
+#include <queue>
 using i64 = long long;
-const int mod = 998244353;
-int main(){ 
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
 
-    int n;
-    std::cin >> n;
-    std::vector<i64> a(n);
-    std::cin >> a[0];
-    i64 x, y, m;
-    std::cin >> x >> y >> m;
-    for (int i = 1;i < n ; ++i) {
-        a[i] = (a[i - 1] * x + y) % m;
+constexpr i64 inf = 1e18;
+
+void solve() {
+    int n, m;
+    std::cin >> n >> m;
+
+    std::vector<std::vector<std::pair<int,int>>> adj(n);
+    for (int i = 0; i < m; ++i) {
+        int a, b, d;
+        std::cin >> a >> b >> d;
+        --a, --b;
+        adj[a].emplace_back(b, -d);
+        adj[b].emplace_back(a, d);
     }
-    int k;
-    std::cin >> k;
 
+    std::vector<i64> dis(n, inf);
 
-    for (int i = 0; i <= k; ++i) {
-        for (int j = 1; j < n; ++j) {
-            a[j] = (a[j] + a[j - 1]) % mod;
+    for (int i = 0; i < n; ++i) {
+        if (dis[i] == inf) {
+            dis[i] = 0;
+            std::queue<int> q;
+            q.emplace(i);
+
+            while (!q.empty()) {
+                int x = q.front();
+                q.pop();
+
+                for (auto [y, d] : adj[x]) {
+                    if (dis[y] == inf) {
+                        dis[y] = dis[x] + d;
+                        q.push(y);
+                    } else if (dis[y] != dis[x] + d) {
+                        std::cout << "No\n";
+                        return; 
+                    }
+                }
+            }
         }
     }
 
-    i64 ans = 0;
-    for (int i = k - 1; i < n; ++i) {
-        ans ^= 1ll * (i + 1) * a[i - k + 1];
+    std::cout << "Yes\n";
+}
+
+
+int main(){ 
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    int t;
+    std::cin >> t;
+    while (t--) {
+        solve();
     }
-    std::cout << ans << '\n';
+
+    return 0;
 }

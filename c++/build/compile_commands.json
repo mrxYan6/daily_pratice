@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/mrx/Library/CloudStorage/OneDrive-个人/codes/acm/daily/c++/build",
-  "command": "/usr/bin/clang++ -DLOCAL  -g -arch arm64 -std=gnu++20 -o CMakeFiles/daily.dir/tmp.cpp.o -c /Users/mrx/Library/CloudStorage/OneDrive-个人/codes/acm/daily/tmp.cpp",
-  "file": "/Users/mrx/Library/CloudStorage/OneDrive-个人/codes/acm/daily/tmp.cpp"
-}
-]

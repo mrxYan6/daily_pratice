@@ -195,7 +195,7 @@ public:
 private:
     Type value;
 };
-const int P = 998244353;
+const int P = 7340033;
 
 using Z = Modular<P>;
 
@@ -455,40 +455,42 @@ struct Poly : public std::vector<Z> {
 	}
 };
 
-void solve() {
-    int n, m;
-    std::cin >> n >> m;
-    
-    Poly a(m + 1);
-    a[0] = 1;
-    for (int i = 0; i < n; ++i) {
-        int x;
-        std::cin >> x;
-        a[x] = 1;
-    }
-    auto res = (a * a).modxk(m + 1);
+std::map<int, Poly> mem;
 
-    std::vector<int> ans;
-    for (int i = 1;i <= m; ++i) {
-        if (res[i] && !a[i]) {
-            std::cout << "NO\n";
-            return;
-        } else if(res[i].val == 2) {
-            ans.push_back(i);
-        }
-    }
-
-    std::cout << "YES\n";
-    std::cout << ans.size() << '\n';
-    for (auto x : ans) std::cout << x << ' ';
-    std::cout << '\n';
+Poly& solve(int x) {
+    if (mem.count(x)) return mem[x];
+    auto& cur = mem[x];
+    if (x == 0) return cur = Poly{1};
+    auto f = solve(x - 1);
+    auto tmp = f * f;
+    return cur = ((tmp * tmp).mulxk(1) + Poly{1}).modxk(1001);
 }
 
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    solve();
+    int t;
+    std::cin >> t;
+    while (t--) {
+        int n, k;
+        std::cin >> n >> k;
+
+        int cnt = 0;
+        while ((n & 1) && (n != 1)) {
+            n /= 2;
+            cnt++;
+        }
+        // std::cout << n << ' ' << cnt << '\n';
+        auto& x = solve(cnt);
+        // for (auto t : x) std::cout << t << ' ';
+        // std::cout << '\n';
+        if (k >= x.size()) {
+            std::cout << 0 << '\n';
+        } else {
+            std::cout << x[k] << '\n';
+        }
+    }
 
     return 0;
 }
